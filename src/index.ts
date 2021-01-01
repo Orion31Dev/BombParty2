@@ -23,7 +23,8 @@ const io: any = require('socket.io')(http, {
 let cId = 0;
 
 let rooms: Room[] = [];
-let sockets: string[] = [];
+let roomsBySockets: string[] = [];
+let idsBySockets: number[] = [];
 
 http.listen(process.env.PORT || 4000);
 
@@ -40,28 +41,32 @@ io.on('connect', (socket: any) => {
       room.addPlayer(createPlayer(name, socket, false));
     }
 
-    sockets[socket.id] = room.name;
+    roomsBySockets[socket.id] = room.name;
+    idsBySockets[socket.id] = cId;
 
     // Remove socket property
     room.broadcastPlayers();
   });
 
   socket.on('word', (msg: string) => {
-    let room = getRoom(sockets[socket.id]);
+    let room = getRoom(roomsBySockets[socket.id]);
     if (room === -1) return;
 
     room.broadcast('word', msg);
   });
 
   socket.on('submit', (msg: string) => {
-    let room = getRoom(sockets[socket.id]);
+    let room = getRoom(roomsBySockets[socket.id]);
     if (room === -1) return;
+
+    console.log(idsBySockets[socket.id] + " " + room.players[room.turn].id);
+    if (idsBySockets[socket.id] !== room.players[room.turn].id) return;
 
     room.submit(msg);
   });
 
   socket.on('disconnect', () => {
-    let gr = getRoom(sockets[socket.id]);
+    let gr = getRoom(roomsBySockets[socket.id]);
     if (gr === -1) return;
     else {
       let room = gr as Room;

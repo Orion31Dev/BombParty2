@@ -87,6 +87,8 @@ export class Room {
     if (remaining < 0) {
       room.players[room.turn].lives--;
 
+      this.broadcast('audio', 'explode');
+
       room.startTime = Date.now();
       room.time = STARTING_TIME;
 
@@ -135,15 +137,21 @@ export class Room {
   }
 
   submit = (word: string) => {
-    console.log(word);
-    
-    if (word === this.rule) this.players[this.turn].socket.emit('error', '1F451:The word cannot equal the rule');
-    else if (!word.includes(this.rule)) this.players[this.turn].socket.emit('error', '2N9L7:The word must contain the rule');
-    else if (!words.includes(word)) this.players[this.turn].socket.emit('error', 'L48QB:The word must be a real word');
+    if (word === this.rule) this.broadcast('error', '1F451:The word cannot equal the rule');
+    else if (!word.includes(this.rule)) this.broadcast('error', '2N9L7:The word must contain the rule');
+    else if (!words.includes(word)) this.broadcast('error', 'L48QB:The word must be a real word');
     else {
       this.time += 1700;
       this.nextTurn(false);
+
+      this.players.forEach(p => { 
+        if (p.id !== this.turn) p.socket.emit('audio', 'turn');
+      });
+
+      return;
     }
+
+    this.broadcast('audio', 'bad-guess');
   };
 
   broadcast = (evt: string, msg: any) => {
@@ -155,6 +163,7 @@ export class Room {
   addPlayer = (player: Player) => {
     this.players.push(player);
     player.socket.emit('rule', this.rule);
+    player.socket.emit('status', this.playing ? 'playing' : 'waiting');
     if (this.players.length === 2) this.beginCountdown();
   };
 
@@ -188,6 +197,7 @@ export class Room {
     }
 
     this.broadcast('turn', this.players[this.turn].id);
+    this.players[this.turn].socket.emit('audio', 'your-turn');
 
     if (!cascade) this.genRule();
   };
