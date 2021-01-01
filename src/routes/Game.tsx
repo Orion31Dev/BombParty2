@@ -183,7 +183,7 @@ export class Game extends React.Component<GameProps, GameState> {
                 const value = e.target.value;
                 const regex = /^[0-9a-zA-Z(\-)']+$/;
                 if (value.match(regex) || value === '') {
-                  this.socket.emit('word', value);
+                  this.socket.emit('word', value.toLowerCase());
 
                   this.setState({ cur: value });
 
