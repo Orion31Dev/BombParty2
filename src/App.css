@@ -375,6 +375,11 @@ input::placeholder {
   right: 0;
 }
 
+.enter-room-code.left {
+  left: 0;
+  right: initial;
+}
+
 button {
   margin: 0 auto;
 

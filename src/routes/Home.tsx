@@ -128,7 +128,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
               maxLength={5}
             />
             <div className="room-code-wrapper">
-              <div className="enter-room-code">----------------------------------- Enter Room Code</div>
+              <div className="enter-room-code">[Enter Room Code]</div>
             </div>
             <div className="home-input-margin" />
             <input
@@ -142,7 +142,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
               maxLength={7}
             />
             <div className="room-code-wrapper">
-              <div className="enter-room-code">Enter Username -------------------------------------</div>
+              <div className="enter-room-code left">[Enter Username]</div>
             </div>
             <div className="home-input-margin" />
             <button
