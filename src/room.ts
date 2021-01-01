@@ -27,7 +27,7 @@ export class Room {
 
   beginCountdown() {
     if (this.players.length < 2 || this.playing) return;
-    this.startGame = Date.now() + 10000;
+    this.startGame = Date.now() + 15000;
     this.startGameInterval = setInterval(() => {
       if (Date.now() > this.startGame) {
         this.start();
