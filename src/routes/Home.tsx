@@ -126,6 +126,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
               }}
               placeholder={this.state.placeholder}
               maxLength={5}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") this.submit();
+              }}
             />
             <div className="room-code-wrapper">
               <div className="enter-room-code">[Enter Room Code]</div>
@@ -140,6 +143,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
               }}
               placeholder="Player"
               maxLength={7}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") this.submit();
+              }}
             />
             <div className="room-code-wrapper">
               <div className="enter-room-code left">[Enter Username]</div>
@@ -148,10 +154,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
             <button
               className="active"
               onClick={() => {
-                if (this.state.code.length !== 5) this.setError('L5M4C', 'The code must be 5 characters long');
-                else {
-                  window.location.href = '/game/' + this.state.code;
-                }
+                this.submit();
               }}
             >
               Play
@@ -175,4 +178,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
   setError = (code: string, text: string) => {
     this.setState({ error: text, errorCode: code });
   };
+
+  submit() {
+    if (this.state.code.length !== 5)
+      this.setError('L5M4C', 'The code must be 5 characters long');
+    else {
+      window.location.href = '/game/' + this.state.code;
+    }
+  }
 }

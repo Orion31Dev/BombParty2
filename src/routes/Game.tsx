@@ -34,6 +34,7 @@ interface Player {
 export class Game extends React.Component<GameProps, GameState> {
   socket: any;
   userId: number;
+  input: any;
 
   constructor(props: GameProps) {
     super(props);
@@ -57,6 +58,7 @@ export class Game extends React.Component<GameProps, GameState> {
 
   componentDidMount() {
     this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
+    //this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
 
     this.socket.emit('join', this.props.match.params.room + ':' + getCookie('name'));
 
@@ -77,6 +79,7 @@ export class Game extends React.Component<GameProps, GameState> {
     });
 
     this.socket.on('turn', (msg: number) => {
+      if (msg === this.userId) this.input.focus();
       this.setState({ turn: msg, cur: '' });
     });
 
@@ -158,6 +161,7 @@ export class Game extends React.Component<GameProps, GameState> {
               Quick, enter a word that contains <span>{this.state.rule}</span>
             </div>
             <input
+              ref={(input) => { this.input = input }}
               className={'word' + (this.state.turn === this.userId ? ' active' : '')}
               maxLength={19}
               placeholder={this.state.turn === this.userId ? '[type here]' : '[waiting]'}
