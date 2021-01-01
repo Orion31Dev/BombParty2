@@ -254,7 +254,7 @@ export class Game extends React.Component<GameProps, GameState> {
   };
 
   submit = () => {
-    this.socket.emit('submit', this.state.cur);
+    this.socket.emit('submit', this.state.cur.toLowerCase());
   };
 
   updateWidth = () => {
