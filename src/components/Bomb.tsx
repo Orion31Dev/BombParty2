@@ -3,7 +3,9 @@ import bomb from '../bomb.svg';
 
 interface BombProps {
   speed: number;
+  turn: boolean;
 }
+
 
 interface BombState {
   opacity: number;
@@ -30,7 +32,7 @@ export class Bomb extends React.Component<BombProps, BombState> {
       else newOpacity = this.state.opacity - this.props.speed;
 
       if (this.state.opacity > 1) newCountUp = false;
-      if (this.state.opacity < 0.5) newCountUp = true;
+      if (this.state.opacity < 0.7) newCountUp = true;
 
       this.setState((p) => {
         return {
@@ -39,7 +41,7 @@ export class Bomb extends React.Component<BombProps, BombState> {
           countUp: newCountUp,
         };
       });
-    }, 100);
+    }, 50);
   }
 
   componentWillUnmount() {
@@ -49,8 +51,22 @@ export class Bomb extends React.Component<BombProps, BombState> {
   render() {
     return (
       <div className="bomb">
-        <img src={bomb} alt="bomb" style={{ opacity: this.state.opacity }} />
+        <img src={bomb} className={this.props.turn ? 'bomb-turn' : ''} alt="bomb" style={{ opacity: this.state.opacity }} />
       </div>
     );
   }
 }
+
+/*
+export class Bomb extends React.Component<BombProps> {
+  render() {
+    let style = { '--bomb-width': this.props.speed } as React.CSSProperties;
+
+    return (
+      <div style={style} className="bomb">
+        <img src={bomb} alt="bomb" />
+      </div>
+    );
+  }
+}
+*/

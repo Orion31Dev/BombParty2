@@ -5,6 +5,7 @@ import heartFilled from '../heart filled.svg';
 import { io } from 'socket.io-client';
 import { Bomb } from '../components/Bomb';
 import { getCookie } from '../cookies';
+import { enableSound, loadSound, playSound, soundOn } from '../audio';
 
 interface GameProps {
   match: any; // from react router
@@ -40,7 +41,7 @@ export class Game extends React.Component<GameProps, GameState> {
     super(props);
 
     this.state = {
-      rule: '', 
+      rule: '',
       cur: '',
       error: '',
       errorCode: '',
@@ -59,19 +60,25 @@ export class Game extends React.Component<GameProps, GameState> {
     setInterval(this.focus, 100);
 
     this.userId = -2;
+
+    loadSound('turn', 'turn.wav');
+    loadSound('bad-guess', 'bad-guess.wav');
+    loadSound('explode', 'explode.wav');
+    loadSound('your-turn', 'your-turn.wav');
   }
 
   focus() {
     setTimeout(() => {
-      try { // Sometimes null, but unfortunately the setTimeout in an interval is the only thing that gets auto focus to work
+      try {
+        // Sometimes null, but unfortunately the setTimeout in an interval is the only thing that gets auto focus to work
         this.textInput.current.focus();
       } catch (e) {}
     }, 100);
   }
 
   componentDidMount() {
-    this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
-    //this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
+    //this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
+    this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
 
     this.socket.emit('join', this.props.match.params.room + ':' + getCookie('name'));
 
@@ -81,6 +88,7 @@ export class Game extends React.Component<GameProps, GameState> {
       if (this.userId !== this.state.turn) {
         this.setState({ cur: msg });
       }
+      this.setError('', '');
     });
 
     this.socket.on('countdown', (msg: number) => {
@@ -93,6 +101,7 @@ export class Game extends React.Component<GameProps, GameState> {
 
     this.socket.on('turn', (msg: number) => {
       this.setState({ turn: msg, cur: '' });
+      if (this.state.status !== 'playing') return;
     });
 
     this.socket.on('winner', (msg: string) => {
@@ -115,6 +124,10 @@ export class Game extends React.Component<GameProps, GameState> {
       this.setError(msg.split(':')[0], msg.split(':')[1]);
     });
 
+    this.socket.on('audio', (msg: string) => {
+      playSound(msg);
+    });
+
     this.socket.on('rule', (msg: string) => {
       this.setState({ rule: msg });
     });
@@ -127,8 +140,16 @@ export class Game extends React.Component<GameProps, GameState> {
   }
 
   render() {
+    if (this.userId === this.state.turn) {
+      document.documentElement.style.setProperty('--accent', '#ff003c');
+      document.documentElement.style.setProperty('--secondary', '#f9f203');
+    } else {
+      document.documentElement.style.setProperty('--accent', '#f9f203');
+      document.documentElement.style.setProperty('--secondary', '#ff003c');
+    }
+
     return (
-      <div className="Game">
+      <div className="Game" onClick={enableSound}>
         <div className="title">
           BombParty <span>------------------------------------- v1.0</span>
         </div>
@@ -139,6 +160,12 @@ export class Game extends React.Component<GameProps, GameState> {
               <div>Warning</div>
               <span>It is currently your turn</span>
             </div>
+          </div>
+        )}
+
+        {!soundOn && (
+          <div className="no-sound">
+            <span>Click to enable sound</span>
           </div>
         )}
 
@@ -157,7 +184,7 @@ export class Game extends React.Component<GameProps, GameState> {
         </div>
 
         {this.state.status === 'playing' ? (
-          <Bomb speed={this.state.speed} />
+          <Bomb turn={this.userId === this.state.turn} speed={this.state.speed} />
         ) : (
           <div className="game-waiting">
             <div>
@@ -186,8 +213,7 @@ export class Game extends React.Component<GameProps, GameState> {
                   this.socket.emit('word', value.toLowerCase());
 
                   this.setState({ cur: value });
-
-                  this.setError('', ''); // Reset the error
+                  this.setError('', '');
                 }
               }}
               onKeyDown={(e) => {

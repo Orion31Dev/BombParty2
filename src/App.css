@@ -10,15 +10,19 @@ html {
   justify-content: center;
 }
 
-#root > div {
-  width: 100%;
-  height: 100%;
+* {
+  transition: background .3s ease, color .3s ease !important; /* for accent and secondary change */
 }
 
 :root {
   --accent: #f9f203;
+  --secondary: #ff003c;
 }
 
+#root > div {
+  width: 100%;
+  height: 100%;
+}
 .input-section {
   text-align: center;
 }
@@ -44,7 +48,8 @@ input {
   text-align: center;
 }
 
-input.active, button:hover {
+input.active,
+button:hover {
   background: black;
   color: var(--accent);
 }
@@ -56,7 +61,15 @@ input:not(.active) {
 }
 
 input::placeholder {
-  color: #8f8a00;
+  opacity: .6;
+}
+
+input.active::placeholder {
+  color: var(--accent);
+}
+
+input:not(.active)::placeholder {
+  color: black;
 }
 
 .title {
@@ -116,6 +129,11 @@ input::placeholder {
   .input-section {
     top: 70%;
   }
+
+  .no-sound {
+    font-size: 3.3vmin;
+    top: 0.5vh;
+  }
 }
 
 @media (min-aspect-ratio: 7/5) {
@@ -142,6 +160,18 @@ input::placeholder {
   .input-section {
     top: 60%;
   }
+
+  .no-sound {
+    font-size: 4vmin;
+    bottom: 1vh;
+  }
+}
+
+.no-sound {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
 }
 
 .warning div {
@@ -167,7 +197,7 @@ input::placeholder {
 }
 
 .error {
-  color: #ff003c;
+  color: var(--secondary);
   height: 2vh;
   margin-top: 0.5vh;
   font-size: 2.25vh;
@@ -252,13 +282,16 @@ input::placeholder {
   bottom: -1.6vh;
   margin: auto;
 
-  color: #ff003c;
+  color: var(--secondary);
 }
 
 .bomb img {
   width: 41vh;
   height: 41vh;
-  animation: anim-bomb infinite alternate 1s;
+}
+
+.bomb img.bomb-turn {
+  filter: invert(5%) sepia(90%) saturate(4693%) hue-rotate(338deg) brightness(107%) contrast(104%);
 }
 
 .status .waiting {
@@ -288,15 +321,6 @@ input::placeholder {
   font-family: monospace;
 }
 
-@keyframes anim-bomb {
-  80% {
-    opacity: 1;
-  }
-  0% {
-    opacity: 0.5;
-  }
-}
-
 .home-title {
   font-weight: 900;
   font-size: 19vmin;
@@ -308,7 +332,7 @@ input::placeholder {
 .home-title-container {
   position: absolute;
   left: 0;
-  top: 0; 
+  top: 0;
   right: 0;
   bottom: 0;
   margin: 0 auto;
@@ -317,7 +341,7 @@ input::placeholder {
   justify-content: center;
   align-items: center;
 
-  transition: all .5s ease-out;
+  transition: all 0.5s ease-out;
 }
 
 .home-title-container.up {
@@ -345,7 +369,6 @@ input::placeholder {
 .home-input-section {
   text-align: center;
 
-
   margin: 40vh auto 0;
 }
 
@@ -368,7 +391,7 @@ input::placeholder {
 }
 
 .enter-room-code {
-  margin-top: .5vmin;
+  margin-top: 0.5vmin;
   font-weight: normal;
   font-size: 2.54vmin;
   position: absolute;
@@ -388,7 +411,7 @@ button {
   font-family: 'Blender Pro';
   font-size: 7vmin;
   font-weight: normal;
-  padding: .9vh 0;
+  padding: 0.9vh 0;
   height: 9vmin;
   width: 50vmin;
   text-align: center;
@@ -399,9 +422,13 @@ button {
 
   color: black;
   background: var(--accent);
-  border: .25vh black solid;
+  border: 0.25vh black solid;
 
   cursor: pointer;
 
-  transition: .15s all linear;
+  transition: 0.15s all linear;
+}
+
+.section-404 {
+  margin-top: 45vh;
 }
