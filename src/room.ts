@@ -1,6 +1,6 @@
 const words = require('word-list-json');
 
-const STARTING_TIME = 16 * 1000;
+const STARTING_TIME = 15 * 1000;
 const MAX_LIVES = 3;
 
 export class Room {
