@@ -151,7 +151,7 @@ export class Game extends React.Component<GameProps, GameState> {
     return (
       <div className="Game" onClick={enableSound}>
         <div className="title">
-          BombParty <span>------------------------------------- v1.0</span>
+          BombParty <span>------------------------------------- v1.1</span>
         </div>
         {this.state.turn === this.userId && (
           <div className="warning">
@@ -189,7 +189,7 @@ export class Game extends React.Component<GameProps, GameState> {
           <div className="game-waiting">
             <div>
               {this.state.countdown > -1 ? `Starting In ${(this.state.countdown / 1000).toFixed(3)}` : 'Waiting For Players'}
-              <span className="winner">[!] {this.state.winner === '' ? 'Error 2H6J7' : 'Winner: ' + this.state.winner}</span>
+              <span className="winner">[!] {this.state.winner === '' ? 'Status 2H6J7' : 'Winner: ' + this.state.winner}</span>
             </div>
           </div>
         )}

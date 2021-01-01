@@ -6,7 +6,7 @@ export const Page404: React.FC<Page404Props> = () => {
   return (
     <div>
       <div className="title">
-        BombParty <span>------------------------------------- v1.0</span>
+        BombParty <span>------------------------------------- v1.1</span>
       </div>
       <div className="section-404">
         <div className="warning static">

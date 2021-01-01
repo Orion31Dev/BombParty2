@@ -132,7 +132,7 @@ input:not(.active)::placeholder {
 
   .no-sound {
     font-size: 3.3vmin;
-    top: 0.5vh;
+    top: 0.4vh;
   }
 }
 
