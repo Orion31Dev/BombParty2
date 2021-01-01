@@ -3,6 +3,8 @@ const words = require('word-list-json');
 const STARTING_TIME = 15 * 1000;
 const MAX_LIVES = 3;
 
+export const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
 export class Room {
   name: string;
   players: Player[];
@@ -67,16 +69,21 @@ export class Room {
   stop() {
     clearInterval(this.checkTimeInterval);
     clearInterval(this.startGameInterval);
-    
+
     this.broadcast('countdown', -1);
 
     this.turn = -1;
     this.startGame = -1;
     this.playing = false;
 
-    this.players.forEach((p) => (p.playing = false));
+    this.players.forEach((p) => {
+      p.playing = false;
+      p.alpha = ALPHABET;
+    });
 
     this.broadcastPlayers();
+    this.broadcastAlphabets();
+
     this.broadcast('status', 'waiting');
     this.broadcast('turn', -1);
   }
@@ -144,9 +151,31 @@ export class Room {
     else if (!words.includes(word)) this.broadcast('error', 'L48QB:The word must be a real word');
     else {
       this.time += 1700;
+
+      // If players uses each letter once, s/he gets a life back
+      let arr = this.players[this.turn].alpha.split('');
+
+      this.players[this.turn].alpha = arr
+        .map((l) => {
+          if (word.includes(l.toLowerCase())) return ' ';
+          else return l;
+        })
+        .join('');
+
+      if (this.players[this.turn].alpha.replace(/\s/g, '').length < 1) {
+        this.players[this.turn].alpha = ALPHABET;
+        if (this.players[this.turn].lives < 3) {
+          this.players[this.turn].lives++;
+          this.broadcastPlayers();
+          this.broadcast('audio', 'life');
+        }
+      }
+
+      this.players[this.turn].socket.emit('alpha', this.players[this.turn].alpha);
+
       this.nextTurn(false);
 
-      this.players.forEach(p => { 
+      this.players.forEach((p) => {
         if (p.id !== this.turn) p.socket.emit('audio', 'turn');
       });
 
@@ -170,13 +199,19 @@ export class Room {
   };
 
   removePlayer = (socket: any) => {
+    if (!this.players[this.turn]) this.nextTurn(true); // Player left during turn
+
     this.players = this.players.filter((p) => p.socket !== socket);
 
     if (this.players.length < 2) this.stop();
   };
 
   broadcastPlayers = () => {
-    this.broadcast('players', playerListWithoutSockets(this));
+    this.broadcast('players', playerListToSend(this));
+  };
+
+  broadcastAlphabets = () => {
+    this.players.forEach((p) => p.socket.emit('alpha', p.alpha));
   };
 
   nextTurn = (cascade: boolean) => {
@@ -205,7 +240,7 @@ export class Room {
   };
 }
 
-function playerListWithoutSockets(room: Room) {
+function playerListToSend(room: Room) {
   return room.players.map((p) => {
     return {
       id: p.id,
@@ -222,6 +257,7 @@ export interface Player {
   lives: number;
   playing: boolean;
   socket: any;
+  alpha: string;
 }
 
 const randomRange = (min: number, max: number) => {

@@ -1,5 +1,6 @@
 import express from 'express';
-import { Room, Player } from './room';
+import { Room, Player, ALPHABET } from './room';
+
 const app = express();
 
 var http = require('http').createServer(app);
@@ -44,7 +45,6 @@ io.on('connect', (socket: any) => {
     roomsBySockets[socket.id] = room.name;
     idsBySockets[socket.id] = cId;
 
-    // Remove socket property
     room.broadcastPlayers();
   });
 
@@ -98,5 +98,6 @@ const createPlayer: (name: string, socket: any, playing: boolean) => Player = (n
     lives: 3,
     playing: playing,
     socket: socket,
+    alpha: ALPHABET,
   };
 };
