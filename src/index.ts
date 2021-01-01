@@ -59,7 +59,6 @@ io.on('connect', (socket: any) => {
     let room = getRoom(roomsBySockets[socket.id]);
     if (room === -1) return;
 
-    console.log(idsBySockets[socket.id] + " " + room.players[room.turn].id);
     if (idsBySockets[socket.id] !== room.players[room.turn].id) return;
 
     room.submit(msg);

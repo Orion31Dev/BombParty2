@@ -137,6 +137,8 @@ export class Room {
   }
 
   submit = (word: string) => {
+    console.log(word);
+
     if (word === this.rule) this.broadcast('error', '1F451:The word cannot equal the rule');
     else if (!word.includes(this.rule)) this.broadcast('error', '2N9L7:The word must contain the rule');
     else if (!words.includes(word)) this.broadcast('error', 'L48QB:The word must be a real word');
