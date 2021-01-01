@@ -34,13 +34,13 @@ interface Player {
 export class Game extends React.Component<GameProps, GameState> {
   socket: any;
   userId: number;
-  input: any;
+  textInput: any;
 
   constructor(props: GameProps) {
     super(props);
 
     this.state = {
-      rule: '',
+      rule: '', 
       cur: '',
       error: '',
       errorCode: '',
@@ -53,12 +53,25 @@ export class Game extends React.Component<GameProps, GameState> {
       countdown: -1,
     };
 
+    this.textInput = React.createRef();
+    this.focus = this.focus.bind(this);
+
+    setInterval(this.focus, 100);
+
     this.userId = -2;
   }
 
+  focus() {
+    setTimeout(() => {
+      try { // Sometimes null, but unfortunately the setTimeout in an interval is the only thing that gets auto focus to work
+        this.textInput.current.focus();
+      } catch (e) {}
+    }, 100);
+  }
+
   componentDidMount() {
-    this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
-    //this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
+    //this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
+    this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
 
     this.socket.emit('join', this.props.match.params.room + ':' + getCookie('name'));
 
@@ -79,7 +92,6 @@ export class Game extends React.Component<GameProps, GameState> {
     });
 
     this.socket.on('turn', (msg: number) => {
-      if (msg === this.userId) this.input.focus();
       this.setState({ turn: msg, cur: '' });
     });
 
@@ -161,7 +173,7 @@ export class Game extends React.Component<GameProps, GameState> {
               Quick, enter a word that contains <span>{this.state.rule}</span>
             </div>
             <input
-              ref={(input) => { this.input = input }}
+              ref={this.textInput}
               className={'word' + (this.state.turn === this.userId ? ' active' : '')}
               maxLength={19}
               placeholder={this.state.turn === this.userId ? '[type here]' : '[waiting]'}
