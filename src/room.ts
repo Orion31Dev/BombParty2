@@ -135,6 +135,8 @@ export class Room {
   }
 
   submit = (word: string) => {
+    console.log(word);
+    
     if (word === this.rule) this.players[this.turn].socket.emit('error', '1F451:The word cannot equal the rule');
     else if (!word.includes(this.rule)) this.players[this.turn].socket.emit('error', '2N9L7:The word must contain the rule');
     else if (!words.includes(word)) this.players[this.turn].socket.emit('error', 'L48QB:The word must be a real word');
