@@ -139,7 +139,7 @@ export class Room {
     else if (!word.includes(this.rule)) this.players[this.turn].socket.emit('error', '2N9L7:The word must contain the rule');
     else if (!words.includes(word)) this.players[this.turn].socket.emit('error', 'L48QB:The word must be a real word');
     else {
-      this.time += 3000;
+      this.time += 1700;
       this.nextTurn();
     }
   };

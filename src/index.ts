@@ -3,9 +3,18 @@ import { Room, Player } from './room';
 const app = express();
 
 var http = require('http').createServer(app);
+
+const whitelist = ['https://bombparty2.herokuapp.com', 'http://localhost:3000'];
+
 const io: any = require('socket.io')(http, {
   cors: {
-    origin: 'https://bombparty2.herokuapp.com',
+    origin: function (origin: any, callback: any) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ['GET', 'POST'],
     credentials: true,
   },
