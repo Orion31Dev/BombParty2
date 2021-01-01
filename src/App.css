@@ -1,0 +1,402 @@
+#root,
+body,
+html {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#root > div {
+  width: 100%;
+  height: 100%;
+}
+
+:root {
+  --accent: #f9f203;
+}
+
+.input-section {
+  text-align: center;
+}
+
+.quick {
+  font-size: 3vh;
+}
+
+.quick span {
+  font-weight: bold;
+}
+
+input {
+  margin-top: 0.5vh;
+  border: none;
+  padding: 0.9vh 0;
+  outline: none;
+  font-family: 'Blender Pro';
+  font-size: 3.5vh;
+  font-weight: 900;
+  width: 100%;
+  height: 3vh;
+  text-align: center;
+}
+
+input.active, button:hover {
+  background: black;
+  color: var(--accent);
+}
+
+input:not(.active) {
+  background: var(--accent);
+  color: black;
+  border: 0.25vh black solid;
+}
+
+input::placeholder {
+  color: #8f8a00;
+}
+
+.title {
+  position: absolute;
+  top: 1vh;
+  left: 2.5vh;
+  font-weight: 900;
+  font-size: 8vh;
+}
+
+.title span {
+  display: block;
+  font-weight: normal;
+  font-size: 2.55vh;
+  margin-top: -2vh;
+  margin-right: 1vh;
+  text-align: right;
+}
+
+.alert {
+  width: 30%;
+  display: inline;
+}
+
+.warning {
+  position: absolute;
+  display: flex;
+  border: 0.25vh solid black;
+  padding: 1vh;
+
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  width: 41vh;
+}
+
+@media (max-aspect-ratio: 7/5) {
+  .warning {
+    top: 15vh;
+  }
+
+  .players {
+    left: 0;
+    right: 0;
+    bottom: 2vh;
+  }
+
+  .bomb {
+    top: 30%;
+  }
+
+  .game-waiting {
+    top: 40%;
+  }
+
+  .inputSection {
+    top: 70%;
+  }
+}
+
+@media (min-aspect-ratio: 7/5) {
+  .warning {
+    top: 2vh;
+  }
+
+  .players {
+    right: 2vh;
+    top: 2vh;
+
+    border: 0.25vh solid black;
+    padding: 2vh;
+  }
+
+  .bomb {
+    top: 20%;
+  }
+
+  .game-waiting {
+    top: 40%;
+  }
+
+  .inputSection {
+    top: 60%;
+  }
+}
+
+.warning div {
+  display: flex;
+  flex-direction: column;
+  margin-left: 4vh;
+  justify-content: center;
+}
+
+.warning.static {
+  position: static;
+}
+
+.warning div div {
+  font-weight: 900;
+  font-size: 4vh;
+  margin: 0;
+}
+
+.warning div span {
+  font-size: 2.5vh;
+  margin-top: -0.5vh;
+}
+
+.error {
+  color: #ff003c;
+  height: 2vh;
+  margin-top: 0.5vh;
+  font-size: 2.25vh;
+}
+
+.error span {
+  font-weight: 900;
+}
+
+.players {
+  font-size: 3vh;
+  position: absolute;
+  text-align: center;
+
+  margin: 0 auto;
+  max-width: 30vh;
+}
+
+.players span {
+  font-weight: 900;
+  font-size: 4vh;
+}
+
+.p-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player {
+  width: 100%;
+  padding-left: 0.5vh;
+  position: relative;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status {
+  margin-left: 0.5vh;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status img {
+  width: 2.2vh;
+  height: 2.2vh;
+  margin-top: 0.2vh;
+}
+
+.bomb,
+.game-waiting {
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  margin: auto;
+  text-align: center;
+}
+
+.bomb {
+  width: 41vh;
+}
+
+.game-waiting div {
+  font-size: 10vmin;
+  font-weight: 900;
+  display: inline-block;
+
+  position: relative;
+}
+
+.game-waiting div span {
+  position: absolute;
+  display: inline;
+
+  font-weight: bold;
+  font-size: 4vmin;
+
+  right: 0.8vh;
+  bottom: -1.6vh;
+  margin: auto;
+
+  color: #ff003c;
+}
+
+.bomb img {
+  width: 41vh;
+  height: 41vh;
+  animation: anim-bomb infinite alternate 1s;
+}
+
+.status .waiting {
+  color: var(--accent);
+  background: black;
+
+  font-size: 1.76vh;
+  border-radius: 25px;
+  padding: 0.5vh 0.75vh;
+  font-weight: normal;
+}
+
+.inputSection {
+  width: 48vh;
+  margin: 0 auto;
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+}
+
+.turn-arrow {
+  position: absolute;
+  left: -1.5vh;
+  top: -0.05vh;
+  font-family: monospace;
+}
+
+@keyframes anim-bomb {
+  80% {
+    opacity: 1;
+  }
+  0% {
+    opacity: 0.5;
+  }
+}
+
+.home-title {
+  font-weight: 900;
+  font-size: 19vmin;
+  opacity: 1;
+
+  position: relative;
+}
+
+.home-title-container {
+  position: absolute;
+  left: 0;
+  top: 0; 
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: all .5s ease-out;
+}
+
+.home-title-container.up {
+  bottom: 60%;
+}
+
+.init {
+  margin: 1vmin;
+  font-weight: normal;
+  font-size: 5vmin;
+}
+
+.arrow {
+  font-family: monospace;
+}
+
+.version {
+  position: absolute;
+  font-size: 4vmin;
+  font-weight: normal;
+  bottom: 1vmin;
+  right: 4vmin;
+}
+
+.home-input-section {
+  text-align: center;
+
+
+  margin: 40vh auto 0;
+}
+
+.home-input-section input {
+  width: 50vmin;
+  height: 7vmin;
+  font-size: 7vmin;
+
+  font-weight: bold;
+}
+
+.room-code-wrapper {
+  position: relative;
+  width: 50vmin;
+  margin: 0 auto;
+}
+
+.home-input-margin {
+  margin: 5vh 0;
+}
+
+.enter-room-code {
+  margin-top: .5vmin;
+  font-weight: normal;
+  font-size: 2.54vmin;
+  position: absolute;
+  right: 0;
+}
+
+button {
+  margin: 0 auto;
+
+  border: none;
+  outline: none;
+  font-family: 'Blender Pro';
+  font-size: 7vmin;
+  font-weight: normal;
+  padding: .9vh 0;
+  height: 9vmin;
+  width: 50vmin;
+  text-align: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: black;
+  background: var(--accent);
+  border: .25vh black solid;
+
+  cursor: pointer;
+
+  transition: .15s all linear;
+}
