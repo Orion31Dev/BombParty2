@@ -16,7 +16,7 @@ let cId = 0;
 let rooms: Room[] = [];
 let sockets: string[] = [];
 
-http.listen(4000);
+http.listen(process.env.port || 4000);
 
 io.on('connect', (socket: any) => {
   socket.on('join', (msg: string) => {
