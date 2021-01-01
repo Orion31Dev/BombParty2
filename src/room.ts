@@ -48,7 +48,7 @@ export class Room {
       p.lives = MAX_LIVES;
     });
 
-    this.nextTurn();
+    this.nextTurn(false);
 
     this.broadcastPlayers();
     this.broadcast('turn', this.players[this.turn].id);
@@ -91,7 +91,7 @@ export class Room {
       room.time = STARTING_TIME;
 
       room.broadcastPlayers();
-      room.nextTurn();
+      room.nextTurn(true);
       return;
     }
 
@@ -140,7 +140,7 @@ export class Room {
     else if (!words.includes(word)) this.players[this.turn].socket.emit('error', 'L48QB:The word must be a real word');
     else {
       this.time += 1700;
-      this.nextTurn();
+      this.nextTurn(false);
     }
   };
 
@@ -166,7 +166,7 @@ export class Room {
     this.broadcast('players', playerListWithoutSockets(this));
   };
 
-  nextTurn = () => {
+  nextTurn = (cascade: boolean) => {
     const inArr = this.players.filter((p) => p.lives > 0 && p.playing); // Players who are "in" the game (alive and not waiting)
     if (inArr.length < 2) {
       if (inArr.length === 1) this.broadcast('winner', inArr[0].name + ` (${inArr[0].id})`);
@@ -181,13 +181,13 @@ export class Room {
     if (this.turn >= this.players.length) this.turn = 0;
 
     if (!this.players[this.turn].playing || this.players[this.turn].lives < 1) {
-      this.nextTurn();
+      this.nextTurn(cascade);
       return;
     }
 
     this.broadcast('turn', this.players[this.turn].id);
 
-    this.genRule();
+    if (!cascade) this.genRule();
   };
 }
 
