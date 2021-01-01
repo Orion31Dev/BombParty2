@@ -23,6 +23,7 @@ interface GameState {
   width: number;
   speed: number;
   countdown: number;
+  alpha: string[];
 }
 
 interface Player {
@@ -39,7 +40,6 @@ export class Game extends React.Component<GameProps, GameState> {
 
   constructor(props: GameProps) {
     super(props);
-
     this.state = {
       rule: '',
       cur: '',
@@ -52,6 +52,7 @@ export class Game extends React.Component<GameProps, GameState> {
       status: '',
       winner: '',
       countdown: -1,
+      alpha: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
     };
 
     this.textInput = React.createRef();
@@ -65,6 +66,7 @@ export class Game extends React.Component<GameProps, GameState> {
     loadSound('bad-guess', 'bad-guess.wav');
     loadSound('explode', 'explode.wav');
     loadSound('your-turn', 'your-turn.wav');
+    loadSound('life', 'life.wav');
   }
 
   focus() {
@@ -77,12 +79,17 @@ export class Game extends React.Component<GameProps, GameState> {
   }
 
   componentDidMount() {
-    this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
-    //this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
+    //this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
+    this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
 
     this.socket.emit('join', this.props.match.params.room + ':' + getCookie('name'));
 
     this.socket.on('yourid', (msg: number) => (this.userId = msg));
+
+    this.socket.on('alpha', (msg: string) => {
+      console.log(msg);
+      this.setState({ alpha: msg.split('') });
+    });
 
     this.socket.on('word', (msg: string) => {
       if (this.userId !== this.state.turn) {
@@ -226,9 +233,23 @@ export class Game extends React.Component<GameProps, GameState> {
             </div>
           </div>
         )}
+        <div className="alpha">
+          {this.renderLetters()}
+        </div>
       </div>
     );
   }
+
+  renderLetters = () => {
+    let i = 0;
+    return this.state.alpha.map((l) => {
+      return (
+        <span key={i++} className="letter">
+          {l}
+        </span>
+      );
+    });
+  };
 
   limitPlayersIfMobile = () => {
     if (this.state.width > 1021) {

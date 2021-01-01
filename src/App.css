@@ -109,13 +109,13 @@ input:not(.active)::placeholder {
 
 @media (max-aspect-ratio: 7/5) {
   .warning {
-    top: 15vh;
+    display: none;
   }
 
   .players {
     left: 0;
     right: 0;
-    bottom: 2vh;
+    top: 15vh;
   }
 
   .bomb {
@@ -128,11 +128,6 @@ input:not(.active)::placeholder {
 
   .input-section {
     top: 70%;
-  }
-
-  .no-sound {
-    font-size: 3.3vmin;
-    top: 0.4vh;
   }
 }
 
@@ -160,14 +155,11 @@ input:not(.active)::placeholder {
   .input-section {
     top: 60%;
   }
-
-  .no-sound {
-    font-size: 4vmin;
-    bottom: 1vh;
-  }
 }
 
 .no-sound {
+  font-size: 4vmin;
+  bottom: 5vmin;
   position: absolute;
   left: 0;
   right: 0;
@@ -429,4 +421,21 @@ button {
 
 .section-404 {
   margin-top: 45vh;
+}
+
+.alpha {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1vmin;
+
+  text-align: center;
+}
+
+.letter {
+  font-size: 3.5vmin;
+  font-weight: bold;
+
+  width: 2vw;
+  display: inline-block;
 }
