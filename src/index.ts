@@ -5,7 +5,7 @@ const app = express();
 var http = require('http').createServer(app);
 const io: any = require('socket.io')(http, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'https://bombparty2.herokuapp.com',
     methods: ['GET', 'POST'],
     credentials: true,
   },
