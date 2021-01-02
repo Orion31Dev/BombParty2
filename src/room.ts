@@ -10,6 +10,7 @@ export class Room {
   players: Player[];
   playing: boolean;
   turn: number;
+  cascadeCount: number;
   rule: string;
   startTime: number;
   time: number;
@@ -17,12 +18,14 @@ export class Room {
   startGame: number;
   startGameInterval: any;
 
+
   constructor(name: string, players: Player[]) {
     this.name = name;
     this.players = players;
     this.playing = false;
     this.turn = -1;
     this.startGame = -1;
+    this.cascadeCount = 0;
 
     this.genRule();
   }
@@ -124,6 +127,8 @@ export class Room {
   }
 
   genRule(): string {
+    this.cascadeCount = 0;
+
     let word = words[randomRange(0, words.length)];
 
     let leng = 0;
@@ -138,14 +143,14 @@ export class Room {
     }
     this.rule = word.substr(randomRange(0, word.length - leng), leng);
 
+    console.log(this.rule + " from " + word);
+
     this.broadcast('rule', this.rule);
 
     return this.rule;
   }
 
   submit = (word: string) => {
-    console.log(word);
-
     if (word === this.rule) this.broadcast('error', '1F451:The word cannot equal the rule');
     else if (!word.includes(this.rule)) this.broadcast('error', '2N9L7:The word must contain the rule');
     else if (!words.includes(word)) this.broadcast('error', 'L48QB:The word must be a real word');
@@ -235,7 +240,8 @@ export class Room {
     this.broadcast('turn', this.players[this.turn].id);
     this.players[this.turn].socket.emit('audio', 'your-turn');
 
-    if (!cascade) this.genRule();
+    if (!cascade || this.cascadeCount >= this.players.length) this.genRule();
+    else this.cascadeCount++;
   };
 }
 
