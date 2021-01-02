@@ -199,9 +199,8 @@ export class Room {
   };
 
   removePlayer = (socket: any) => {
-    if (!this.players[this.turn]) this.nextTurn(true); // Player left during turn
-
     this.players = this.players.filter((p) => p.socket !== socket);
+    if (!this.players[this.turn]) this.nextTurn(true); // Player left during turn
 
     if (this.players.length < 2) this.stop();
   };
