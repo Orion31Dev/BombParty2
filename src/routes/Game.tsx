@@ -212,6 +212,10 @@ export class Game extends React.Component<GameProps, GameState> {
               maxLength={19}
               placeholder={this.state.turn === this.userId ? '[type here]' : '[waiting]'}
               value={this.state.cur}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
               disabled={this.state.turn !== this.userId}
               onChange={(e) => {
                 const value = e.target.value;
@@ -233,9 +237,7 @@ export class Game extends React.Component<GameProps, GameState> {
             </div>
           </div>
         )}
-        <div className="alpha">
-          {this.renderLetters()}
-        </div>
+        <div className="alpha">{this.renderLetters()}</div>
       </div>
     );
   }

@@ -383,16 +383,16 @@ input:not(.active)::placeholder {
 }
 
 .enter-room-code {
-  margin-top: 0.5vmin;
+  margin-top: -2.5vmin;
   font-weight: normal;
   font-size: 2.54vmin;
   position: absolute;
-  right: 0;
+  left: 0;
 }
 
-.enter-room-code.left {
-  left: 0;
-  right: initial;
+.enter-room-code.right {
+  right: 0;
+  left: initial;
 }
 
 button {

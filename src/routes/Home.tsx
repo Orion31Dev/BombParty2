@@ -117,6 +117,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
         </div>
         {this.state.input ? (
           <div className="home-input-section">
+            <div className="room-code-wrapper">
+              <div className="enter-room-code">[Enter Room Code]</div>
+            </div>
             <input
               className="active"
               type="text"
@@ -130,10 +133,10 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 if (e.key === "Enter") this.submit();
               }}
             />
-            <div className="room-code-wrapper">
-              <div className="enter-room-code">[Enter Room Code]</div>
-            </div>
             <div className="home-input-margin" />
+            <div className="room-code-wrapper">
+              <div className="enter-room-code right">[Enter Username]</div>
+            </div>
             <input
               type="text"
               value={this.state.name}
@@ -147,9 +150,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 if (e.key === "Enter") this.submit();
               }}
             />
-            <div className="room-code-wrapper">
-              <div className="enter-room-code left">[Enter Username]</div>
-            </div>
             <div className="home-input-margin" />
             <button
               className="active"
