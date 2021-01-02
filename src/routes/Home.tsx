@@ -180,9 +180,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
   };
 
   submit() {
-    if (this.state.code.length !== 5)
+    if (this.state.code.length !== 5) {
       this.setError('L5M4C', 'The code must be 5 characters long');
-    else {
+    } else if (this.state.name.length === 0) {
+      this.setError('BFU3M', 'You must enter a username');
+    }
+     else {
       window.location.href = '/game/' + this.state.code;
     }
   }
