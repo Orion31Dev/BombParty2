@@ -4,7 +4,7 @@ import heart from '../heart.svg';
 import heartFilled from '../heart filled.svg';
 import { io } from 'socket.io-client';
 import { Bomb } from '../components/Bomb';
-import { getCookie, setCookie } from '../cookies';
+import { getCookie } from '../cookies';
 import { enableSound, loadSound, playSound, soundOn } from '../audio';
 
 interface GameProps {
@@ -79,13 +79,8 @@ export class Game extends React.Component<GameProps, GameState> {
   }
 
   componentDidMount() {
-    if (!getCookie('name')) {
-      setCookie('room-code', this.props.match.params.room, 1);
-      window.location.href = "/";
-      return;
-    }
-
     this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
+    //this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
 
     this.socket.emit('join', this.props.match.params.room + ':' + getCookie('name'));
 

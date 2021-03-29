@@ -355,7 +355,7 @@ input:not(.active)::placeholder {
   font-size: 4vmin;
   font-weight: normal;
   bottom: 1vmin;
-  right: 4vmin;
+  right: 3.5vmin;
 }
 
 .home-input-section {

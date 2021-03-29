@@ -67,7 +67,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
         this.setState({
           vI: this.state.vI + 1,
         });
-        if (this.state.vI >= 'Version 1.1'.length) clearInterval(this.vInterval);
+        if (this.state.vI >= 'Version 1.2'.length) clearInterval(this.vInterval);
       }, 50);
     }, 2000);
 
@@ -115,7 +115,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
         <div className={'home-title-container' + (this.state.up ? ' up' : '')}>
           <div className="home-title">
             {'BombParty'.substr(0, this.state.bpI)}
-            <div className="version">{'Version 1.1'.substr('Version 1.1'.length - this.state.vI, 'Version 1.1'.length)}</div>
+            <div className="version">{'Version 1.2'.substr('Version 1.2'.length - this.state.vI, 'Version 1.2'.length)}</div>
           </div>
         </div>
         {this.state.input ? (
