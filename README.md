@@ -20,7 +20,7 @@ For a word to be valid, it has to be included in the dictionary, it must contain
 
 You can play BombParty [here](https://bombparty2.herokuapp.com). Please allow time for the both the client and server to cold start, which may lead to long load times.
 
-![Screenshot](https://imgur.com/Tb18QPh)
+![Screenshot](https://i.imgur.com/Tb18QPh.png)
 
 ## About
 
