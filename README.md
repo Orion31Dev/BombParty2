@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+# BombParty
+The Explosive Word Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## The Game
 
-## Available Scripts
+### Overview
 
-In the project directory, you can run:
+**BombParty** is a game where players take turns coming up with words that contain a specific series of letters. Each round starts with fifteen seconds on the clock, and like hot potato, the timer is passed from player to player.
 
-### `yarn start`
+### Lives
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Each player starts with three lives. Each time the bomb explodes, the player whose turn it was loses a life, and the timer is reset to fifteen seconds.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Once you use every letter at least once, you regain a life. (I've never seen anyone actually do this)
 
-### `yarn test`
+### Words
+The dictionary I'm using, `word-list-json`, does not include *most* names and other proper nouns, however, some do work. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+For a word to be valid, it has to be included in the dictionary, it must contain the rule (or the series of letters required), and it must not be exactly the same as the rule.
 
-### `yarn build`
+You can play BombParty [here](https://bombparty2.herokuapp.com). Please allow time for the both the client and server to cold start, which may lead to long load times.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Screenshot](https://imgur.com/Tb18QPh)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## About
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+BombParty was made with Create React App. The source code for the client and server are on the `client` and `server` branches respectively.
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+I remade this game after the original version was taken offline.
