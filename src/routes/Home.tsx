@@ -41,6 +41,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
   }
 
   componentDidMount() {
+    this.setState({ code: getCookie('room-code') });
+    setCookie('room-code', '', 1);
+
     setTimeout(() => {
       this.bpInterval = setInterval(() => {
         this.setState({
@@ -130,7 +133,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
               placeholder={this.state.placeholder}
               maxLength={5}
               onKeyDown={(e) => {
-                if (e.key === "Enter") this.submit();
+                if (e.key === 'Enter') this.submit();
               }}
             />
             <div className="home-input-margin" />
@@ -147,7 +150,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
               placeholder="Player"
               maxLength={7}
               onKeyDown={(e) => {
-                if (e.key === "Enter") this.submit();
+                if (e.key === 'Enter') this.submit();
               }}
             />
             <div className="home-input-margin" />
@@ -184,8 +187,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
       this.setError('L5M4C', 'The code must be 5 characters long');
     } else if (this.state.name.length === 0) {
       this.setError('BFU3M', 'You must enter a username');
-    }
-     else {
+    } else {
       window.location.href = '/game/' + this.state.code;
     }
   }
