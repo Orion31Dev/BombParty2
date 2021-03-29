@@ -158,7 +158,7 @@ export class Game extends React.Component<GameProps, GameState> {
     return (
       <div className="Game" onClick={enableSound}>
         <div className="title">
-          BombParty <span>------------------------------------- v1.1</span>
+          BombParty <span>------------------------------------- v1.2</span>
         </div>
         {this.state.turn === this.userId && (
           <div className="warning">
