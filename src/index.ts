@@ -27,6 +27,16 @@ let rooms: Room[] = [];
 let roomsBySockets: string[] = [];
 let idsBySockets: number[] = [];
 
+app.get('servers', (_req: any, res: any) => {
+  let servers = [];
+  for (let room of rooms) {
+    let server = { name: room.name, players: room.players.length };
+    servers.push(server);
+  }
+
+  res.json(servers);
+});
+
 http.listen(process.env.PORT || 4000);
 
 io.on('connect', (socket: any) => {
@@ -36,7 +46,9 @@ io.on('connect', (socket: any) => {
 
     let room = getRoom(roomName); // any so that the room.players in the broadcast() works
     if (room === -1) {
-      room = new Room(roomName, [createPlayer(name, socket, false)]);
+      let lives: number | undefined = parseInt(msg.split(':')[2]);
+
+      room = new Room(roomName, [createPlayer(name, socket, false)], lives);
       rooms.push(room);
     } else {
       room.addPlayer(createPlayer(name, socket, false));

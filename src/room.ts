@@ -1,7 +1,7 @@
 const words = require('word-list-json');
 
 const STARTING_TIME = 15 * 1000;
-const MAX_LIVES = 3;
+const DEFAULT_MAX_LIVES = 3;
 
 export const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -17,14 +17,16 @@ export class Room {
   checkTimeInterval: any;
   startGame: number;
   startGameInterval: any;
+  maxLives: number;
 
-  constructor(name: string, players: Player[]) {
+  constructor(name: string, players: Player[], lives?: number) {
     this.name = name;
     this.players = players;
     this.playing = false;
     this.turn = -1;
     this.startGame = -1;
     this.cascadeCount = 0;
+    this.maxLives = lives || DEFAULT_MAX_LIVES;
 
     this.genRule();
   }
@@ -49,7 +51,7 @@ export class Room {
     if (this.players.length < 2 || this.playing) return;
     this.players.forEach((p) => {
       p.playing = true;
-      p.lives = MAX_LIVES;
+      p.lives = DEFAULT_MAX_LIVES;
     });
 
     this.nextTurn(false);
@@ -144,7 +146,7 @@ export class Room {
     }
     this.rule = word.substr(randomRange(0, word.length - leng), leng);
 
-    console.log(this.rule + ' from ' + word);
+    console.log(`[${this.name}] ${this.rule} from ${word}`);
 
     this.broadcast('rule', this.rule);
 
@@ -199,6 +201,7 @@ export class Room {
   };
 
   addPlayer = (player: Player) => {
+    if (player.name === '') player.name = 'cringe';
     this.players.push(player);
     player.socket.emit('rule', this.rule);
     player.socket.emit('status', this.playing ? 'playing' : 'waiting');
