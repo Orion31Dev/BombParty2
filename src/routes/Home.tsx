@@ -17,6 +17,8 @@ interface HomeState {
   placeholder: string;
 }
 
+const VERSION_TEXT = 'by Ryan Salik (v. 1.3)';
+
 export class Home extends React.Component<HomeProps, HomeState> {
   bpInterval: any;
   inInterval: any;
@@ -67,7 +69,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
         this.setState({
           vI: this.state.vI + 1,
         });
-        if (this.state.vI >= 'Version 1.2'.length) clearInterval(this.vInterval);
+        if (this.state.vI >= VERSION_TEXT.length) clearInterval(this.vInterval);
       }, 50);
     }, 2000);
 
@@ -104,18 +106,18 @@ export class Home extends React.Component<HomeProps, HomeState> {
       <div>
         {!this.state.up && (
           <div className="init">
-            <span className="arrow">{'>'}</span> {'Initializing Game'.substr(0, this.state.inI)}
+            <span className="arrow">{'>'}</span> {'Initializing Game'.substring(0, this.state.inI)}
           </div>
         )}
         {this.state.input && (
           <div className="init">
-            <span className="arrow">{'>'}</span> {'You consent to the use of cookies by continuing'.substr(0, this.state.coI)}
+            <span className="arrow">{'>'}</span> {'You consent to the use of cookies by continuing'.substring(0, this.state.coI)}
           </div>
         )}
         <div className={'home-title-container' + (this.state.up ? ' up' : '')}>
           <div className="home-title">
-            {'BombParty'.substr(0, this.state.bpI)}
-            <div className="version">{'Version 1.2'.substr('Version 1.2'.length - this.state.vI, 'Version 1.2'.length)}</div>
+            {'BombParty'.substring(0, this.state.bpI)}
+            <div className="version">{VERSION_TEXT.substring(VERSION_TEXT.length - this.state.vI, VERSION_TEXT.length)}</div>
           </div>
         </div>
         {this.state.input ? (
@@ -162,6 +164,22 @@ export class Home extends React.Component<HomeProps, HomeState> {
             >
               Play
             </button>
+            <button
+              className="half"
+              onClick={() => {
+                window.location.href = '/create';
+              }}
+            >
+              Create
+            </button>
+            <button
+              className="half"
+              onClick={() => {
+                window.location.href = '/servers';
+              }}
+            >
+              Server List
+            </button>
             <div className="error">
               {this.state.error !== '' && <span>Error {this.state.errorCode}:</span>} {this.state.error}
             </div>
@@ -184,6 +202,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
   submit() {
     if (this.state.code.length !== 5) {
+      // lol random error codes lol
       this.setError('L5M4C', 'The code must be 5 characters long');
     } else if (this.state.name.length === 0) {
       this.setError('BFU3M', 'You must enter a username');

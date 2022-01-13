@@ -78,9 +78,12 @@ input:not(.active)::placeholder {
   left: 2.5vh;
   font-weight: 900;
   font-size: 8vh;
+
+  color: black;
+  text-decoration: none;
 }
 
-.title span {
+.title > span {
   display: block;
   font-weight: normal;
   font-size: 2.55vh;
@@ -296,6 +299,11 @@ input:not(.active)::placeholder {
   font-weight: normal;
 }
 
+.players .lives {
+  font-size: 0.7em;
+  font-weight: normal;
+}
+
 .input-section {
   width: 48vh;
   margin: 0 auto;
@@ -358,10 +366,11 @@ input:not(.active)::placeholder {
   right: 3.5vmin;
 }
 
-.home-input-section {
+.home-input-section,
+.server-list {
   text-align: center;
 
-  margin: 40vh auto 0;
+  margin: 35vh auto 0;
 }
 
 .home-input-section input {
@@ -405,7 +414,7 @@ button {
   font-weight: normal;
   padding: 0.9vh 0;
   height: 9vmin;
-  width: 50vmin;
+  width: 50.45vmin;
   text-align: center;
 
   display: flex;
@@ -417,6 +426,18 @@ button {
   border: 0.25vh black solid;
 
   cursor: pointer;
+}
+
+button.half {
+  width: 24.7vmin;
+  height: 7vmin;
+
+  margin: 2vmin .6vmin 0;
+
+  font-size: 3.5vmin;
+
+  display: inline-flex;
+
 }
 
 .section-404 {
@@ -438,4 +459,48 @@ button {
 
   width: 3.5vmin;
   display: inline-block;
+}
+
+.sec-title {
+  font-weight: 900;
+  font-size: 8vmin;
+  font-weight: 900;
+
+  margin: -10vh 0 5vh;
+}
+
+.server {
+  display: flex;
+  
+  align-items: center;
+  justify-content: space-between;
+
+  border: solid 0.25vh black;
+
+  width: 50vmin;
+
+  color: black;
+  text-decoration: none;
+
+  margin: 1vh auto;
+
+  cursor: pointer;
+  transition: all 0.09s linear;
+}
+
+.server:hover {
+  background: black;
+  color: var(--accent);
+}
+
+.server .name {
+  font-size: 5vmin;
+  font-weight: bold;
+
+  margin: 0 1em;
+}
+
+.server .player-count {
+  font-size: 4vmin;
+  margin: 0 1em;
 }

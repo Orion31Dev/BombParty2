@@ -79,10 +79,12 @@ export class Game extends React.Component<GameProps, GameState> {
   }
 
   componentDidMount() {
-    this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
-    //this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
+    //this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
+    this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
 
-    this.socket.emit('join', this.props.match.params.room + ':' + getCookie('name'));
+    if (window.localStorage.createCode === this.props.match.params.room && window.localStorage.createMaxLives)
+      this.socket.emit('join', this.props.match.params.room + ':' + getCookie('name') + ':' + window.localStorage.createMaxLives);
+    else this.socket.emit('join', this.props.match.params.room + ':' + getCookie('name'));
 
     this.socket.on('yourid', (msg: number) => (this.userId = msg));
 
@@ -158,7 +160,14 @@ export class Game extends React.Component<GameProps, GameState> {
     return (
       <div className="Game" onClick={enableSound}>
         <div className="title">
-          BombParty <span>------------------------------------- v1.2</span>
+          BombParty{' '}
+          <span>
+            Room Code:&nbsp;
+            <span style={{ fontFamily: 'monospace' }}>
+              <strong>{this.props.match.params.room}</strong>
+            </span>
+            &nbsp;  --------------- v1.3
+          </span>
         </div>
         {this.state.turn === this.userId && (
           <div className="warning">
@@ -196,7 +205,14 @@ export class Game extends React.Component<GameProps, GameState> {
           <div className="game-waiting">
             <div>
               {this.state.countdown > -1 ? `Starting In ${(this.state.countdown / 1000).toFixed(3)}` : 'Waiting For Players'}
-              <span className="winner">[!] {this.state.winner === '' ? 'Status 2H6J7' : 'Winner: ' + this.state.winner}</span>
+              <span className="winner">
+                [!]{' '}
+                {this.state.winner === ''
+                  ? this.state.countdown > 0
+                    ? 'Refresh to Restart Timer'
+                    : 'Status 2H6J7'
+                  : 'Winner: ' + this.state.winner}
+              </span>
             </div>
           </div>
         )}
@@ -264,6 +280,14 @@ export class Game extends React.Component<GameProps, GameState> {
   renderStatus = (player: Player) => {
     if (!player.playing) return <div className="waiting">waiting</div>;
     if (player.lives < 1) return <div className="waiting">out</div>;
+
+    if (player.lives > 3)
+      return (
+        <React.Fragment>
+          <img src={heartFilled} alt="♥" />
+          <div className="lives">&nbsp;x{player.lives}</div>
+        </React.Fragment>
+      );
 
     let arr = [];
     for (let i = 0; i < 3; i++) {
