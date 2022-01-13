@@ -70,7 +70,7 @@ function randomString(length: number) {
 }
 
 async function fetchServers() {
-  let response = await fetch('http://localhost:4000/servers');
+  let response = await fetch('https://server-bombparty2.herokuapp.com/servers');
   let data = await response.json();
   return data;
 }
