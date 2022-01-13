@@ -3,6 +3,8 @@ import { Room, Player, ALPHABET } from './room';
 
 const app = express();
 
+const cors = require('cors');
+
 var http = require('http').createServer(app);
 
 const whitelist = ['https://bombparty2.herokuapp.com', 'http://localhost:3000'];
@@ -27,7 +29,7 @@ let rooms: Room[] = [];
 let roomsBySockets: string[] = [];
 let idsBySockets: number[] = [];
 
-app.get('servers', (_req: any, res: any) => {
+app.get('/servers', cors(), (_req: any, res: any) => {
   let servers = [];
   for (let room of rooms) {
     let server = { name: room.name, players: room.players.length };
@@ -47,6 +49,7 @@ io.on('connect', (socket: any) => {
     let room = getRoom(roomName); // any so that the room.players in the broadcast() works
     if (room === -1) {
       let lives: number | undefined = parseInt(msg.split(':')[2]);
+      console.log(msg.split(':')[2], lives)
 
       room = new Room(roomName, [createPlayer(name, socket, false)], lives);
       rooms.push(room);

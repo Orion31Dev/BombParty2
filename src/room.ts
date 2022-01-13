@@ -33,14 +33,14 @@ export class Room {
 
   beginCountdown() {
     if (this.players.length < 2 || this.playing) return;
-    this.startGame = Date.now() + 15000;
+    this.startGame = Date.now() + 10000;
     this.startGameInterval = setInterval(() => {
       if (Date.now() > this.startGame) {
         this.start();
         return;
       }
       this.broadcast('countdown', this.startGame - Date.now());
-    }, 100);
+    }, 29);
   }
 
   start() {
@@ -51,7 +51,7 @@ export class Room {
     if (this.players.length < 2 || this.playing) return;
     this.players.forEach((p) => {
       p.playing = true;
-      p.lives = DEFAULT_MAX_LIVES;
+      p.lives = this.maxLives;
     });
 
     this.nextTurn(false);
