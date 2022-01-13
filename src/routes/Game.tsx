@@ -79,8 +79,8 @@ export class Game extends React.Component<GameProps, GameState> {
   }
 
   componentDidMount() {
-    //this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
-    this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
+    this.socket = io('wss://server-bombparty2.herokuapp.com', { transports: ['websocket'], upgrade: false });
+    //this.socket = io('http://localhost:4000', { transports: ['websocket'], upgrade: false });
 
     if (window.localStorage.createCode === this.props.match.params.room && window.localStorage.createMaxLives)
       this.socket.emit('join', this.props.match.params.room + ':' + getCookie('name') + ':' + window.localStorage.createMaxLives);
