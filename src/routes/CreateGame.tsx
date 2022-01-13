@@ -4,6 +4,18 @@ import { getCookie, setCookie } from '../cookies';
 export default function CreateGame() {
   let [maxLives, setMaxLives] = useState('');
   let [name, setName] = useState(getCookie('name'));
+  let [error, setError] = useState('');
+  let [errorCode, setErrorCode] = useState('');
+
+  function verifySettings() {
+    if (parseInt(maxLives) <= 0) {
+      setError('Max lives must be greater than 0');
+      setErrorCode('ML67J');
+      return false;
+    }
+
+    return true;
+  }
 
   return (
     <div className="create-game">
@@ -41,7 +53,16 @@ export default function CreateGame() {
         />
       </div>
       <div className="home-input-margin" />
-      <button onClick={() => createGame(maxLives)}>Create</button>
+      <button
+        onClick={() => {
+          if (verifySettings()) createGame(maxLives);
+        }}
+      >
+        Create
+      </button>
+      <div className="error">
+        {error !== '' && <span>Error {errorCode}:</span>} {error}
+      </div>
     </div>
   );
 }
